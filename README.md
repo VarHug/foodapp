@@ -1,6 +1,6 @@
 # foodapp
 
-> foodapp
+> foodapp(仿外卖App)
 
 ## Build Setup
 
