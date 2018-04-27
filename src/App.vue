@@ -18,7 +18,21 @@
 
 <script>
   import header from './components/header/header.vue';
+  const ERR_OK = 0;
   export default {
+    data() {
+      return {
+        seller: {}
+      };
+    },
+    created() {
+      this.$axios.get('/api/seller').then((response) => {
+        if (response.data.errno === ERR_OK) {
+          this.seller = response.data.data;
+          // console.log(this.seller);
+        }
+      });
+    },
     components: {
       'v-header': header
     }
