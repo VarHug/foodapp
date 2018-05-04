@@ -37,10 +37,8 @@
             <div class="star-wrapper">
               <star :size='48' :score="seller.score"></star>
             </div>
-            <div class="title">
-              <div class="line"></div>
-              <div class="text">优惠信息</div>
-              <div class="line"></div>
+            <div class="title-wrapper">
+              <header-title :text="'优惠信息'"></header-title>
             </div>
             <ul v-if="seller.supports" class="supports">
               <li class="support-item" v-for="item in seller.supports" :key="item.id">
@@ -48,10 +46,8 @@
                 <span class="text">{{item.description}}</span>
               </li>
             </ul>
-            <div class="title">
-              <div class="line"></div>
-              <div class="text">商家公告</div>
-              <div class="line"></div>
+            <div class="title-wrapper">
+              <header-title :text="'商家公告'"></header-title>
             </div>
             <div class="bulletin">
               <p class="content">{{seller.bulletin}}</p>
@@ -68,6 +64,7 @@
 
 <script type="text/ecmascript-6">
   import star from '../star/star.vue';
+  import title from '../header_title/title.vue';
 
   export default {
     props: {
@@ -92,7 +89,8 @@
       this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
     },
     components: {
-      star
+      star,
+      'header-title': title
     }
   };
 </script>
@@ -210,11 +208,6 @@
       height 100%
       z-index -1
       filter blur(10px)
-    .fade-enter, .fade-leave-to
-      opacity 0
-      background rgba(7, 17, 27, 0)
-    .fade-enter-active, .fade-leave-active
-      transition opacity .5s
     .detail
       position fixed
       top 0
@@ -240,19 +233,9 @@
             margin-top 18px
             padding 2px 0
             text-align center
-          .title
-            display flex
+          .title-wrapper
             width 80%
             margin 28px auto 24px auto
-            .line
-              flex 1
-              position relative
-              top -6px
-              border-bottom 1px solid rgba(255, 255, 255, 0.2)
-            .text
-              padding 0 12px
-              font-size 14px
-              font-weight 700
           .supports
             width 80%
             margin 0 auto
@@ -297,4 +280,10 @@
         margin -64px auto 0 auto
         clear both
         font-size 32px
+
+  .fade-enter, .fade-leave-to
+    opacity 0
+    background rgba(7, 17, 27, 0)
+  .fade-enter-active, .fade-leave-active
+    transition opacity 1s
 </style>
