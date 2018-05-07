@@ -4,7 +4,7 @@
       <ul>
         <li v-for="item in goods" :key="item.id" class="menu-item">
           <span class="text border-1px">
-            <span v-show="item.type>0" class="icon" :class="classMap[item.type]"></span>{{item.name}}
+            <icon :num='3' :type='item.type'></icon>{{item.name}}
           </span>
         </li>
       </ul>
@@ -14,6 +14,8 @@
 </template>
 
 <script type="text/ecmascript-6">
+import icon from '../icon/icon';
+
 const ERR_OK = 0;
 
 export default {
@@ -34,6 +36,9 @@ export default {
           this.goods = response.data.data;
         }
       });
+  },
+  components: {
+    icon
   }
 };
 </script>
@@ -64,24 +69,29 @@ export default {
           vertical-align middle
           border-1px(rgba(7, 17, 27, 0.1))
           font-size 12px
+          // .icon
+          //   display inline-block
+          //   vertical-align top
+          //   width 12px
+          //   height 12px
+          //   margin-right 2px
+          //   background-size 12px 12px
+          //   background-repeat no-repeat
+          //   &.decrease
+          //     bg-image('decrease_3')
+          //   &.discount
+          //     bg-image('discount_3')
+          //   &.guarantee
+          //     bg-image('guarantee_3')
+          //   &.invoice
+          //     bg-image('invoice_3')
+          //   &.special
+          //     bg-image('special_3')
           .icon
-            display inline-block
-            vertical-align top
             width 12px
             height 12px
             margin-right 2px
             background-size 12px 12px
-            background-repeat no-repeat
-            &.decrease
-              bg-image('decrease_3')
-            &.discount
-              bg-image('discount_3')
-            &.guarantee
-              bg-image('guarantee_3')
-            &.invoice
-              bg-image('invoice_3')
-            &.special
-              bg-image('special_3')
     .foods-wrapper
       flex 1
 </style>
