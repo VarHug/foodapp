@@ -4,7 +4,7 @@
       <ul>
         <li v-for="item in goods" :key="item.id" class="menu-item">
           <span class="text border-1px">
-            <icon :num='3' :type='item.type'></icon>{{item.name}}
+            <icon v-show="item.type>0" :num='3' :type='item.type'></icon>{{item.name}}
           </span>
         </li>
       </ul>
