@@ -1,6 +1,6 @@
 <template>
   <div class="goods">
-    <div class="menu-wrapper">
+    <div class="menu-wrapper" ref="menuWrapper">
       <ul>
         <li v-for="item in goods" :key="item.id" class="menu-item">
           <span class="text border-1px">
@@ -9,7 +9,7 @@
         </li>
       </ul>
     </div>
-    <div class="foods-wrapper">
+    <div class="foods-wrapper" ref="foodsWrapper">
       <ul>
         <li v-for="item in goods" :key="item.id" class="food-list">
           <h1 class="title">{{item.name}}</h1>
@@ -22,12 +22,10 @@
                 <h2 class="name">{{food.name}}</h2>
                 <p class="desc">{{food.description}}</p>
                 <div class="extra">
-                  <span class="sellcount">月售{{food.sellCount}}份</span>
-                  <span>好评率{{food.rating}}%</span>
+                  <span class="sellcount">月售{{food.sellCount}}份</span><span>好评率{{food.rating}}%</span>
                 </div>
                 <div class="price">
-                  <span class="nowprice">¥{{food.price}}</span>
-                  <span v-show="food.oldPrice" class="oldprice">¥{{food.oldPrice}}</span>
+                  <span class="nowprice">¥{{food.price}}</span><span v-show="food.oldPrice" class="oldprice">¥{{food.oldPrice}}</span>
                 </div>
               </div>
             </li>
@@ -40,6 +38,7 @@
 
 <script type="text/ecmascript-6">
 import icon from '../icon/icon';
+import BScroll from 'better-scroll';
 
 const ERR_OK = 0;
 
@@ -59,8 +58,17 @@ export default {
     this.$axios.get('/api/goods').then((response) => {
         if (response.data.errno === ERR_OK) {
           this.goods = response.data.data;
+          this.$nextTick(() => {
+            this._initScroll();
+          });
         }
       });
+  },
+  methods: {
+    _initScroll() {
+      this.menuScroll = new BScroll(this.$refs.menuWrapper, {});
+      this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {});
+    }
   },
   components: {
     icon
@@ -152,6 +160,7 @@ export default {
             color rgb(147, 153, 159)
           .desc
             margin-bottom 8px
+            line-height 12px
           .extra
             .sellcount
               margin-right 12px
