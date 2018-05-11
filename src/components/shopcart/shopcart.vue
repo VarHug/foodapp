@@ -12,7 +12,7 @@
         <div class="desc">另需配送费¥{{deliveryPrice}}元</div>
       </div>
       <div class="content-right">
-        <div class="pay" :class="{'highlight': totalPrice>20}">{{payDesc}}</div>
+        <div class="pay" :class="{'highlight': totalPrice>=minPrice}">{{payDesc}}</div>
       </div>
     </div>
   </div>
