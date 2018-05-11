@@ -27,6 +27,9 @@
                 <div class="price">
                   <span class="nowprice">¥{{food.price}}</span><span v-show="food.oldPrice" class="oldprice">¥{{food.oldPrice}}</span>
                 </div>
+                <div class="cartcontrol-wrapper">
+                  <cartcontrol :food="food"></cartcontrol>
+                </div>
               </div>
             </li>
           </ul>
@@ -41,6 +44,7 @@
 import icon from '../icon/icon';
 import BScroll from 'better-scroll';
 import shopcart from '../shopcart/shopcart';
+import cartcontrol from '../cartconcontrol/cartconcontrol';
 
 const ERR_OK = 0;
 
@@ -75,6 +79,7 @@ export default {
         click: true
       });
       this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
+        click: true,
         probeType: 3
       });
 
@@ -84,7 +89,7 @@ export default {
     },
     _calculateHeight() {
       let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
-      console.log(foodList);
+      // console.log(foodList);
       let height = 0;
       this.listHeight.push(height);
       for (let i = 0; i < foodList.length; i++) {
@@ -113,7 +118,8 @@ export default {
   },
   components: {
     icon,
-    shopcart
+    shopcart,
+    cartcontrol
   }
 };
 </script>
@@ -225,4 +231,8 @@ export default {
               text-decoration line-through
               font-size 10px
               color rgb(147, 153, 159)
+          .cartcontrol-wrapper
+            position absolute
+            right 0
+            bottom 12px
 </style>
