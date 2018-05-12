@@ -6,12 +6,13 @@
     </div>
     </transition>
     <div class="cart-count" v-show="food.count>0">{{food.count}}</div>
-    <div class="cart-add icon-add_circle" @click="addCart"></div>
+    <div class="cart-add icon-add_circle" @click="addCart($event)"></div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import Vue from 'vue';
+import {eventHub} from '../../common/js/eventHub.js';
 
 export default {
   props: {
@@ -25,13 +26,14 @@ export default {
     };
   },
   methods: {
-    addCart() {
-      console.log('click');
+    addCart(event) {
+      // console.log('click');
       if (!this.food.count) {
         Vue.set(this.food, 'count', 1);
       } else {
         this.food.count++;
       }
+      eventHub.$emit('cart.add', event.target);
     },
     decreaseCart() {
       if (this.food.count) {

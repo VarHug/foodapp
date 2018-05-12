@@ -36,7 +36,7 @@
         </li>
       </ul>
     </div>
-    <shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
+    <shopcart ref="shopcart" :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
   </div>
 </template>
 
@@ -45,6 +45,7 @@ import icon from '../icon/icon';
 import BScroll from 'better-scroll';
 import shopcart from '../shopcart/shopcart';
 import cartcontrol from '../cartconcontrol/cartconcontrol';
+import {eventHub} from '../../common/js/eventHub';
 
 const ERR_OK = 0;
 
@@ -64,15 +65,16 @@ export default {
   created() {
     this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
     this.$axios.get('/api/goods').then((response) => {
-        if (response.data.errno === ERR_OK) {
-          this.goods = response.data.data;
-          // console.log(this.goods);
-          this.$nextTick(() => {
-            this._initScroll();
-            this._calculateHeight();
-          });
-        }
-      });
+      if (response.data.errno === ERR_OK) {
+        this.goods = response.data.data;
+        // console.log(this.goods);
+        this.$nextTick(() => {
+          this._initScroll();
+          this._calculateHeight();
+        });
+      }
+    });
+    eventHub.$on('cart.add', this._drop);
   },
   methods: {
     _initScroll() {
@@ -98,6 +100,12 @@ export default {
         height += item.clientHeight;
         this.listHeight.push(height);
       }
+    },
+    _drop(target) {
+      // 异步执行下落动画，优化体验
+      this.$nextTick(() => {
+        this.$refs.shopcart.drop(target);
+      });
     },
     selectMenu(index) {
       let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
