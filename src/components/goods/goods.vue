@@ -1,42 +1,45 @@
 <template>
-  <div class="goods">
-    <div class="menu-wrapper" ref="menuWrapper">
-      <ul>
-        <li v-for="(item, index) in goods" :key="item.id" class="menu-item" :class="{'current': currentIndex === index}" @click="selectMenu(index)">
-          <span class="text border-1px">
-            <icon v-show="item.type>0" :num='3' :type='item.type'></icon>{{item.name}}
-          </span>
-        </li>
-      </ul>
+  <div class="router-goods">
+    <div class="goods">
+      <div class="menu-wrapper" ref="menuWrapper">
+        <ul>
+          <li v-for="(item, index) in goods" :key="item.id" class="menu-item" :class="{'current': currentIndex === index}" @click="selectMenu(index)">
+            <span class="text border-1px">
+              <icon v-show="item.type>0" :num='3' :type='item.type'></icon>{{item.name}}
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div class="foods-wrapper" ref="foodsWrapper">
+        <ul>
+          <li v-for="item in goods" :key="item.id" class="food-list food-list-hook">
+            <h1 class="title">{{item.name}}</h1>
+            <ul>
+              <li v-for="food in item.foods" :key="food.id" class="food-item border-1px" @click="selectFood(food,$event)">
+                <div class="icon">
+                  <img width="57" height="57" :src="food.icon">
+                </div>
+                <div class="content">
+                  <h2 class="name">{{food.name}}</h2>
+                  <p class="desc">{{food.description}}</p>
+                  <div class="extra">
+                    <span class="sellcount">月售{{food.sellCount}}份</span><span>好评率{{food.rating}}%</span>
+                  </div>
+                  <div class="price">
+                    <span class="nowprice">¥{{food.price}}</span><span v-show="food.oldPrice" class="oldprice">¥{{food.oldPrice}}</span>
+                  </div>
+                  <div class="cartcontrol-wrapper">
+                    <cartcontrol :food="food"></cartcontrol>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <shopcart ref="shopcart" :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
     </div>
-    <div class="foods-wrapper" ref="foodsWrapper">
-      <ul>
-        <li v-for="item in goods" :key="item.id" class="food-list food-list-hook">
-          <h1 class="title">{{item.name}}</h1>
-          <ul>
-            <li v-for="food in item.foods" :key="food.id" class="food-item border-1px">
-              <div class="icon">
-                <img width="57" height="57" :src="food.icon">
-              </div>
-              <div class="content">
-                <h2 class="name">{{food.name}}</h2>
-                <p class="desc">{{food.description}}</p>
-                <div class="extra">
-                  <span class="sellcount">月售{{food.sellCount}}份</span><span>好评率{{food.rating}}%</span>
-                </div>
-                <div class="price">
-                  <span class="nowprice">¥{{food.price}}</span><span v-show="food.oldPrice" class="oldprice">¥{{food.oldPrice}}</span>
-                </div>
-                <div class="cartcontrol-wrapper">
-                  <cartcontrol :food="food"></cartcontrol>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-    <shopcart ref="shopcart" :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
+    <food :food="selectedFood" ref="food"></food>
   </div>
 </template>
 
@@ -44,8 +47,9 @@
 import icon from '../icon/icon';
 import BScroll from 'better-scroll';
 import shopcart from '../shopcart/shopcart';
-import cartcontrol from '../cartconcontrol/cartconcontrol';
+import cartcontrol from '../cartcontrol/cartcontrol';
 import {eventHub} from '../../common/js/eventHub';
+import food from '../food/food';
 
 const ERR_OK = 0;
 
@@ -59,7 +63,8 @@ export default {
     return {
       goods: [],
       listHeight: [],
-      scrollY: 0
+      scrollY: 0,
+      selectedFood: {}
     };
   },
   created() {
@@ -111,6 +116,11 @@ export default {
       let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
       let el = foodList[index];
       this.foodsScroll.scrollToElement(el, 300);
+    },
+    selectFood(food, event) {
+      this.selectedFood = food;
+      this.$refs.food.show();
+      // console.log(this.selectedFood);
     }
   },
   computed: {
@@ -139,7 +149,8 @@ export default {
   components: {
     icon,
     shopcart,
-    cartcontrol
+    cartcontrol,
+    food
   }
 };
 </script>

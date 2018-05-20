@@ -71,12 +71,12 @@ export default {
       font-size 24px
       color rgb(0, 160, 220)
 
-  &.move-enter-active, &.move-leave-active
+  .move-enter-active, .move-leave-active
     transition all .4s linear
     .inner
       transition all .4s linear
       transform rotate(0)
-  &.move-enter, &.move-leave-to
+  .move-enter, .move-leave-to
     opacity 0
     transform translate3d(36px, 0, 0)
     .inner

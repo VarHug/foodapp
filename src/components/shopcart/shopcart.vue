@@ -57,7 +57,7 @@
 
 <script type="text/ecmascript-6">
 import BScroll from 'better-scroll';
-import cartcontrol from '../cartconcontrol/cartconcontrol';
+import cartcontrol from '../cartcontrol/cartcontrol';
 
 export default {
   props: {
@@ -260,6 +260,7 @@ export default {
       .content-left
         flex 1
         background-color #141d27
+        z-index 50
         .logo-wrapper
           display inline-block
           vertical-align top
@@ -321,6 +322,7 @@ export default {
       .content-right
         flex 0 0 105px
         width 105px
+        z-index 50
         .pay
           height 48px
           line-height 48px
@@ -347,7 +349,7 @@ export default {
       top 0
       left 0
       transform translate3d(0, -100%, 0)
-      z-index -1
+      z-index 40
       width 100%
       // &.fold-enter-active, &.fold-leave-active
       //   transition all .5s
