@@ -22,7 +22,7 @@
         <cartcontrol :food="food"></cartcontrol>
       </div>
       <transition name="fade">
-      <div class="buy" v-show="!food.count || food.count === 0" @click="addFirst($event)">加入购物车</div>
+      <div class="buy" v-show="!food.count || food.count === 0" @click.stop.prevent="addFirst($event)">加入购物车</div>
       </transition>
     </div>
   </div>
