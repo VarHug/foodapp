@@ -48,17 +48,26 @@ export default {
   },
   data() {
     return {
-
+      mySelectType: this.selectType,
+      myOnlyContent: this.onlyContent
     };
+  },
+  watch: {
+    selectType(val) {
+      this.mySelectType = val;
+    },
+    onlyContent(val) {
+      this.myOnlyContent = val;
+    }
   },
   methods: {
     select(type, event) {
-      this.selectType = type;
+      this.mySelectType = type;
       eventHub.$emit('ratingtype.select', type);
     },
     toggleContent(event) {
-      this.onlyContent = !this.onlyContent;
-      eventHub.$emit('content.toggle', this.onlyContent);
+      this.myOnlyContent = !this.myOnlyContent;
+      eventHub.$emit('content.toggle', this.myOnlyContent);
     }
   },
   computed: {

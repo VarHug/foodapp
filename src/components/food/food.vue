@@ -35,18 +35,18 @@
         <ratingselect :select-type="selectType" :only-content="onlyContent" :desc="desc" :ratings="food.ratings"></ratingselect>
         <div class="rating-wrapper">
           <ul v-show="food.ratings && food.ratings.length">
-            <li class="rating-item border-1px" v-for="(rating, index) in food.ratings" :key="index">
+            <li class="rating-item border-1px" v-for="(rating, index) in food.ratings" :key="index" v-show="needShow(rating.rateType, rating.text)">
               <div class="user">
                 <span class="name">{{rating.username}}</span>
                 <img class="avatar" width="12px" height="12px" :src="rating.avatar">
               </div>
-              <div class="time">{{rating.rateTime}}</div>
+              <div class="time">{{rating.rateTime}} | formatDate</div>
               <p class="text">
                 <i :class="{'icon-thumb_up':rating.rateType===0, 'icon-thumb_down':rating.rateType===1}"></i>{{rating.text}}
               </p>
             </li>
           </ul>
-          <div class="no-rating" v-show="!food.ratings || !food.ratings.length"></div>
+          <div class="no-rating" v-show="!food.ratings || !food.ratings.length">暂无评价</div>
         </div>
       </div>
     </div>
@@ -61,9 +61,8 @@ import Vue from 'vue';
 import {eventHub} from '../../common/js/eventHub.js';
 import split from '../split/split';
 import ratingselect from '../ratingselect/ratingselect';
+import {formatDate} from '../../common/js/date.js';
 
-const POSITIVE = 0;
-const NEGATIVE = 1;
 const ALL = 2;
 
 export default {
@@ -71,6 +70,15 @@ export default {
     food: {
       type: Object
     }
+  },
+  created() {
+    eventHub.$on('ratingtype.select', (type) => {
+      this.selectType = type;
+    });
+
+    eventHub.$on('content.toggle', (onlyContent) => {
+      this.onlyContent = onlyContent;
+    });
   },
   data() {
     return {
@@ -88,7 +96,7 @@ export default {
     show() {
       this.foodShow = true;
       this.selectType = ALL;
-      this.onlyContent = true;
+      this.onlyContent = false;
       this.$nextTick(() => {
         if (!this.scroll) {
           this.scroll = new BScroll(this.$refs.food, {
@@ -108,6 +116,22 @@ export default {
       // }
       Vue.set(this.food, 'count', 1);
       eventHub.$emit('cart.add', event.target);
+    },
+    needShow(type, text) {
+      if (this.onlyContent && !text) {
+        return false;
+      }
+      if (this.selectType === ALL) {
+        return true;
+      } else {
+        return type === this.selectType;
+      }
+    }
+  },
+  filters: {
+    formatDate(time) {
+      let date = new Date(time);
+      return formatDate(date, 'yyyy-MM-dd hh:mm');
     }
   },
   components: {
@@ -227,6 +251,41 @@ export default {
             position relative
             padding 16px 0
             border-1px(rgba(7, 17, 27, 0.1))
+            .user
+              position absolute
+              top 16px
+              right 0
+              line-height 12px
+              font-size 0
+              .name
+                display inline-block
+                vertical-align top
+                margin-right 6px
+                font-size 10px
+                color rgb(147, 153, 159)
+              .avatar
+                border-radius 50%
+            .time
+              margin-bottom 6px
+              line-height 12px
+              font-size 10px
+              color rgb(147, 153, 159)
+            .text
+              line-height 16px
+              font-size 12px
+              color rgb(7, 17, 27)
+              .icon-thumb_up, .icon-thumb_down
+                margin-right 4px
+                line-height 16px
+                font-size 12px
+              .icon-thumb_up
+                color rgb(0, 160, 220)
+              .icon-thumb_down
+                color rgb(147, 153, 159)
+          .no-rating
+            padding 16px 0
+            font-size 12px
+            color rgb(147, 153, 159)
 
   .foodmove-enter-active, .foodmove-leave-active
     transition all .3s linear
