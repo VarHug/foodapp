@@ -33,6 +33,21 @@
       <div class="rating">
         <h1 class="title">商品评价</h1>
         <ratingselect :select-type="selectType" :only-content="onlyContent" :desc="desc" :ratings="food.ratings"></ratingselect>
+        <div class="rating-wrapper">
+          <ul v-show="food.ratings && food.ratings.length">
+            <li class="rating-item border-1px" v-for="(rating, index) in food.ratings" :key="index">
+              <div class="user">
+                <span class="name">{{rating.username}}</span>
+                <img class="avatar" width="12px" height="12px" :src="rating.avatar">
+              </div>
+              <div class="time">{{rating.rateTime}}</div>
+              <p class="text">
+                <i :class="{'icon-thumb_up':rating.rateType===0, 'icon-thumb_down':rating.rateType===1}"></i>{{rating.text}}
+              </p>
+            </li>
+          </ul>
+          <div class="no-rating" v-show="!food.ratings || !food.ratings.length"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -104,6 +119,8 @@ export default {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+  @import "../../common/stylus/mixin";
+
   .food
     position fixed
     top 0
@@ -204,6 +221,12 @@ export default {
           margin-left 18px
           font-size 14px
           color rgb(7, 17, 27)
+        .rating-wrapper
+          padding 0 18px
+          .rating-item
+            position relative
+            padding 16px 0
+            border-1px(rgba(7, 17, 27, 0.1))
 
   .foodmove-enter-active, .foodmove-leave-active
     transition all .3s linear
