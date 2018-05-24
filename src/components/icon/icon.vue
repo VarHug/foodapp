@@ -21,7 +21,8 @@ export default {
     this.classMap = {
       '1': ['decrease_1', 'discount_1', 'special_1', 'invoice_1', 'guarantee_1'],
       '2': ['decrease_2', 'discount_2', 'special_2', 'invoice_2', 'guarantee_2'],
-      '3': ['decrease_3', 'discount_3', 'special_3', 'invoice_3', 'guarantee_3']
+      '3': ['decrease_3', 'discount_3', 'special_3', 'invoice_3', 'guarantee_3'],
+      '4': ['decrease_4', 'discount_4', 'special_4', 'invoice_4', 'guarantee_4']
     };
   }
 };
@@ -68,4 +69,14 @@ export default {
       bg-image('invoice_3')
     &.special_3
       bg-image('special_3')
+    &.decrease_4
+      bg-image('decrease_4')
+    &.discount_4
+      bg-image('discount_4')
+    &.guarantee_4
+      bg-image('guarantee_4')
+    &.invoice_4
+      bg-image('invoice_4')
+    &.special_4
+      bg-image('special_4')
 </style>
