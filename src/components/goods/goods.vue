@@ -72,7 +72,6 @@ export default {
     this.$axios.get('/api/goods').then((response) => {
       if (response.data.errno === ERR_OK) {
         this.goods = response.data.data;
-        console.log(this.goods);
         this.$nextTick(() => {
           this._initScroll();
           this._calculateHeight();
