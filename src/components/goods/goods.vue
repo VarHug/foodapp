@@ -3,7 +3,7 @@
     <div class="goods">
       <div class="menu-wrapper" ref="menuWrapper">
         <ul>
-          <li v-for="(item, index) in goods" :key="item.id" class="menu-item" :class="{'current': currentIndex === index}" @click="selectMenu(index)">
+          <li v-for="(item, index) in goods" :key="item.id" class="menu-item" :class="{'current': currentIndex === index}" @click="selectMenu(index)" ref="menuList">
             <span class="text border-1px">
               <icon v-show="item.type>0" :num='3' :type='item.type'></icon>{{item.name}}
             </span>
@@ -119,7 +119,11 @@ export default {
     selectFood(food, event) {
       this.selectedFood = food;
       this.$refs.food.show();
-      // console.log(this.selectedFood);
+    },
+    _followScroll(index) {
+      let menuList = this.$refs.menuList;
+      let el = menuList[index];
+      this.menuScroll.scrollToElement(el, 300, 0, -100);
     }
   },
   computed: {
@@ -128,6 +132,7 @@ export default {
         let head = this.listHeight[i];
         let tail = this.listHeight[i + 1];
         if (this.scrollY >= head && this.scrollY < tail) {
+          this._followScroll(i);
           return i;
         }
       }
