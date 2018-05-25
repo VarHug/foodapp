@@ -1,6 +1,8 @@
 # foodapp
 
 > foodapp(仿外卖App)
+> iMooc实战学习
+> 课程地址：http://coding.imooc.com/class/74.html
 
 ## Build Setup
 
