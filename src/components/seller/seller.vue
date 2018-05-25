@@ -73,6 +73,7 @@
   import split from '../split/split';
   import icon from '../icon/icon.vue';
   import BScroll from 'better-scroll';
+  import {saveToLocal, loadFromLocal} from '../../common/js/store.js';
 
   export default {
     props: {
@@ -82,8 +83,10 @@
     },
     data() {
       return {
-        favorite: false
-      }
+        favorite: (() => {
+          return loadFromLocal(this.seller.id, 'favorite', false);
+        })()
+      };
     },
     computed: {
       favoriteText() {
@@ -136,7 +139,8 @@
         }
       },
       toggleFavorite() {
-        this.favorite = !this.favorite
+        this.favorite = !this.favorite;
+        saveToLocal(this.seller.id, 'favorite', this.favorite);
       }
     },
     components: {

@@ -18,18 +18,26 @@
 
 <script>
   import header from './components/header/header.vue';
+  import {urlParse} from './common/js/util.js';
+
   const ERR_OK = 0;
+
   export default {
     data() {
       return {
-        seller: {}
+        seller: {
+          id: (() => {
+            let queryParam = urlParse();
+            return queryParam.id;
+          })()
+        }
       };
     },
     created() {
-      this.$axios.get('/api/seller').then((response) => {
-        if (response.data.errno === ERR_OK) {
-          this.seller = response.data.data;
-          // console.log(this.seller);
+      this.$axios.get('/api/seller?id=' + this.seller.id).then((response) => {
+        response = response.data;
+        if (response.errno === ERR_OK) {
+          this.seller = Object.assign({}, this.seller, response.data);
         }
       });
     },
